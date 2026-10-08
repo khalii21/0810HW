@@ -3,6 +3,23 @@
 #include <iostream>
 #include <cstddef>
 
+DWORD send(DWORD& err, HANDLE wr, const char* a, size_t k)
+{
+  DWORD r = 0;
+  while (r < k)
+  {
+    DWORD written = 0;
+    BOOL st = WriteFile(wr, b + r, static_cast< DWORD >(k - r), &written, NULL);
+    if !(st)
+    {
+      err = GetLastError();
+      break;
+    }
+    r += written;
+  }
+  return r;
+}
+
 int main()
 {
   std::string str;
