@@ -32,4 +32,30 @@ int main(int argc, char** argv)
     return 1;
   }
   HANDLE read = reinterpret_cast< HANDLE >(std::stoull(argv[1]));
+
+  DWORD err = 0;
+  size_t size = 0;
+
+  if (rcvSize(err, read, size) != sizeof(size))
+  {
+    std::cerr << err << '\n';
+    CloseHandle(read);
+    return 1;
+  }
+
+  std::string str(size, '\0');
+
+  if (rcv(err, read, &str[0], size) != size)
+  {
+    std::cerr << err << '\n';
+    CloseHandle(read);
+    return 1;
+  }
+
+  std::cout << str << '\n';
+
+  CloseHandle(read);
+
+  return 0;
 }
+
